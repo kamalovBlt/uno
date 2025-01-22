@@ -1,0 +1,51 @@
+@font-face {
+    font-family: "PaluiSPDemo";
+    src: url("../fonts/PaluiSPDemo-Bold.otf") format("opentype"); /* Исправили на opentype */
+}
+
+/* Фон для AnchorPane */
+.background-pane {
+    -fx-background-image: url("../images/background/main-page-background.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+/* Стили для размещения кнопок */
+.VBox {
+    -fx-spacing: 20px; /* Расстояние между кнопками */
+}
+
+/* Стили для кнопок */
+.button {
+    -fx-background-color: transparent; /* Убираем фон кнопок */
+    -fx-text-fill: #272323; /* Темный цвет текста */
+    -fx-font-size: 30px; /* Увеличиваем размер шрифта */
+    -fx-font-family: "PaluiSPDemo", "Times New Roman"; /* Шрифт в стиле игр */
+    -fx-pref-width: 250px; /* Увеличиваем ширину кнопки */
+    -fx-pref-height: 60px; /* Увеличиваем высоту кнопки */
+    -fx-border-radius: 15px; /* Скругленные углы */
+    -fx-cursor: hand; /* Курсор руки при наведении */
+    -fx-effect: dropshadow( gaussian, rgba(0,0,0,0.2), 6, 0.0, 0, 3 ); /* Мягкая тень */
+    -fx-margin: 5px; /* Отступ вокруг кнопок */
+    -fx-border-width: 0px; /* Убираем границу */
+}
+
+/* Эффекты при наведении */
+.button:hover {
+    -fx-background-color: transparent; /* Оставляем прозрачный фон при наведении */
+    -fx-text-fill: rgba(41, 128, 185, 0.9); /* Текст с голубым оттенком */
+    -fx-effect: dropshadow( gaussian, rgba(0,0,0,0.3), 6, 0.0, 0, 4 ); /* Увеличенная тень */
+}
+
+/* Эффект при нажатии */
+.button:pressed {
+    -fx-background-color: transparent; /* Прозрачный фон при нажатии */
+    -fx-text-fill: rgba(28, 89, 128, 0.9); /* Текст темно-голубой при нажатии */
+}
+
+/* Стиль для неактивных кнопок */
+.button:disabled {
+    -fx-background-color: transparent; /* Прозрачный фон для неактивных кнопок */
+    -fx-text-fill: rgba(127, 140, 141, 0.7); /* Тусклый серый текст для неактивных кнопок */
+}
