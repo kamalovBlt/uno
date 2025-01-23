@@ -2,22 +2,22 @@ package ru.itis.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+
+import javafx.scene.layout.AnchorPane;
+
 
 public class MainPageController {
 
     @FXML
-    private Button playButton;
+    private AnchorPane rootPane;
 
     @FXML
-    private Button createButton;
-
-    @FXML
-    private Button exitButton;
+    public void initialize() {
+        System.out.println(rootPane == null);
+    }
 
     @FXML
     private void handlePlayButtonClick() {
-        System.out.println("play button clicked");
     }
 
     @FXML
@@ -27,6 +27,6 @@ public class MainPageController {
 
     @FXML
     private void handleCreateButtonClick() {
-
     }
+
 }
