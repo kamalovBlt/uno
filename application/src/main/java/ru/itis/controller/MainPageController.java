@@ -12,6 +12,7 @@ public class MainPageController implements RootPaneAware {
 
     @FXML
     private void handlePlayButtonClick() {
+        /*TODO: надо будет проверить зарегистрирован ли пользователь*/
         rootPane.getChildren().clear();
         FXMLLoaderUtil.loadFXMLToPane("/view/templates/main-page-play-go-to-lobby.fxml", rootPane);
     }

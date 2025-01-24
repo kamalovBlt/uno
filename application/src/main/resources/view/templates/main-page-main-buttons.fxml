@@ -10,4 +10,5 @@
     <Button mnemonicParsing="false" onAction="#handlePlayButtonClick" text="PLAY"/>
     <Button mnemonicParsing="false" onAction="#handleCreateButtonClick" text="CREATE"/>
     <Button mnemonicParsing="false" onAction="#handleExitButtonClick" text="EXIT"/>
+    <!-- TODO: как то сверху поставить кнопку профиля, ну и собственно переход туда -->
 </VBox>
