@@ -3,21 +3,18 @@ package ru.itis.controller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import ru.itis.controller.util.FXMLLoaderUtil;
 
+public class MainPageController implements RootPaneAware {
 
-public class MainPageController {
-
-    @FXML
-    private AnchorPane rootPane;
-
-    @FXML
-    public void initialize() {
-        System.out.println(rootPane == null);
-    }
+    private Pane rootPane;
 
     @FXML
     private void handlePlayButtonClick() {
+        /*TODO: надо будет проверить зарегистрирован ли пользователь*/
+        rootPane.getChildren().clear();
+        FXMLLoaderUtil.loadFXMLToPane("/view/templates/main-page-play-go-to-lobby.fxml", rootPane);
     }
 
     @FXML
@@ -27,6 +24,14 @@ public class MainPageController {
 
     @FXML
     private void handleCreateButtonClick() {
+
+        rootPane.getChildren().clear();
+        FXMLLoaderUtil.loadFXMLToPane("/view/templates/main-page-create-lobby.fxml", rootPane);
+
     }
 
+    @Override
+    public void setRootPane(Pane pane) {
+        this.rootPane = pane;
+    }
 }

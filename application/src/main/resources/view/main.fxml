@@ -7,6 +7,5 @@
             stylesheets="@../css/main-page.css"
             xmlns="http://javafx.com/javafx/11.0.14-internal"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ru.itis.controller.MainPageController">
-    <fx:include source="templates/main-page-buttons.fxml"/>
+            fx:controller="ru.itis.controller.AppStartController">
 </AnchorPane>
