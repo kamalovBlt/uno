@@ -8,7 +8,7 @@ public class PlayGoToLobbyController implements RootPaneAware {
 
     /*TODO: тут будет присоединение к лобби*/
 
-    public Pane rootPane;
+    private Pane rootPane;
 
     @FXML
     private void handleBackButton() {
