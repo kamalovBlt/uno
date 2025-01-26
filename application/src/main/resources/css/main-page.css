@@ -5,7 +5,7 @@
 
 .background-pane {
     -fx-background-image: url("../images/background/main-page-background.png");
-    -fx-background-size: cover;
+    -fx-background-size: stretch;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center center;
 }

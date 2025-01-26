@@ -30,8 +30,17 @@ public class MainPageController implements RootPaneAware {
 
     }
 
+    @FXML
+    private void handleProfileButtonClick() {
+
+        rootPane.getChildren().clear();
+        FXMLLoaderUtil.loadFXMLToPane("/view/templates/main-page-profile.fxml", rootPane);
+
+    }
+
     @Override
     public void setRootPane(Pane pane) {
         this.rootPane = pane;
     }
+
 }
