@@ -17,11 +17,13 @@ public class Uno extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/main.fxml"));
 
         try {
+
             Parent root = fxmlLoader.load();
             stage.setScene(new Scene(root));
             stage.setFullScreen(true);
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             stage.show();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
