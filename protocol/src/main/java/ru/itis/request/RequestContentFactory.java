@@ -1,7 +1,7 @@
 package ru.itis.request;
 
 import ru.itis.Content;
-import ru.itis.request.content.SignInContent;
+import ru.itis.request.content.SignInRequestContent;
 
 public class RequestContentFactory {
 
@@ -9,7 +9,7 @@ public class RequestContentFactory {
 
         switch (requestType) {
             case SIGN_IN -> {
-                return new SignInContent(data);
+                return new SignInRequestContent(data);
             }
             case SIGN_UP -> {
                 return null;

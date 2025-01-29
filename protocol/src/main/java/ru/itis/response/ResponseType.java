@@ -1,15 +1,14 @@
 package ru.itis.response;
 
-import lombok.Getter;
-
 import java.util.Optional;
 
-@Getter
 public enum ResponseType {
 
-    SUCCESS(1);
+    SUCCESS(1),
+    SIGN_IN(2);
 
     private final int index;
+
 
     ResponseType(int index) {
         this.index = index;
@@ -22,6 +21,10 @@ public enum ResponseType {
             }
         }
         return Optional.empty();
+    }
+
+    public int getIndex() {
+        return index;
     }
 
 }

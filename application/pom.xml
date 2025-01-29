@@ -21,6 +21,12 @@
         </dependency>
 
         <dependency>
+            <groupId>ru.itis</groupId>
+            <artifactId>protocol</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>22-ea+11</version>
@@ -36,7 +42,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>ru.itis.Uno</mainClass>
+                            <mainClass>ru.itis.uno.Uno</mainClass>
                         </configuration>
                     </execution>
                 </executions>

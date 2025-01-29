@@ -6,7 +6,7 @@
       AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50"
       xmlns="http://javafx.com/javafx/11.0.14-internal"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="ru.itis.controller.MainPageController">
+      fx:controller="ru.itis.uno.controller.pages.MainPageController">
     <Button mnemonicParsing="false" onAction="#handlePlayButtonClick" text="PLAY"/>
     <Button mnemonicParsing="false" onAction="#handleCreateButtonClick" text="CREATE"/>
     <Button mnemonicParsing="false" onAction="#handleProfileButtonClick" text="PROFILE"/>

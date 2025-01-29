@@ -5,17 +5,17 @@ import ru.itis.Content;
 import java.nio.charset.StandardCharsets;
 
 @Getter
-public class SignInContent implements Content {
+public class SignInRequestContent implements Content {
 
     private String username;
     private String password;
 
-    public SignInContent(String username, String password) {
+    public SignInRequestContent(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public SignInContent(byte[] contentData) {
+    public SignInRequestContent(byte[] contentData) {
         String contentString = new String(contentData, StandardCharsets.UTF_8);
         String[] parts = contentString.split("&");
         for (String part : parts) {

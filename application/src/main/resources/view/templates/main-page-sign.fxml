@@ -2,17 +2,13 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.text.Text?>
 <VBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50"
       AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50"
       xmlns="http://javafx.com/javafx/11.0.14-internal"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="ru.itis.uno.controller.pages.ProfilePageController">
+      fx:controller="ru.itis.uno.controller.pages.SignPageController">
 
-
-    <Text fx:id="id"/>
-    <Text fx:id="username"/>
-    <Button mnemonicParsing="false" onAction="#handleBackButton" text="BACK"/>
-    <Button mnemonicParsing="false" onAction="#handleLeaveOutButton" text="LEAVE OUT"/>
+    <Button mnemonicParsing="false" onAction="#handleSignInButton" text="SIGN IN"/>
+    <Button mnemonicParsing="false" onAction="#handleSignUpButton" text="SIGN UP"/>
 
 </VBox>

@@ -27,4 +27,8 @@ public enum RequestType {
         return Optional.empty();
     }
 
+    public int getIndex() {
+        return index;
+    }
+
 }

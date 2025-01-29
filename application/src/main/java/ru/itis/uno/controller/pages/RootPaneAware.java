@@ -1,4 +1,4 @@
-package ru.itis.controller;
+package ru.itis.uno.controller.pages;
 
 import javafx.scene.layout.Pane;
 /**

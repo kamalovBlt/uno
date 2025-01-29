@@ -1,4 +1,4 @@
-package ru.itis.controller.util;
+package ru.itis.uno.controller.util;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -6,13 +6,14 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-import ru.itis.controller.RootPaneAware;
+import ru.itis.uno.controller.pages.RootPaneAware;
 
 /**
  * Вспомогательный класс для управления навигацией и передачи контроллерам корневого узла приложения*/
 public class FXMLLoaderUtil {
 
     public static void loadFXMLToPane(String fxmlPath, Pane rootPane) {
+
         try {
 
             FXMLLoader fxmlLoader = new FXMLLoader(FXMLLoaderUtil.class.getResource(fxmlPath));
@@ -27,6 +28,7 @@ public class FXMLLoaderUtil {
         } catch (IOException e) {
             throw new RuntimeException("Failed to load FXML: " + fxmlPath, e);
         }
+
     }
 
 }
