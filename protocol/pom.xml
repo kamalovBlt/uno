@@ -9,20 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>server.unogame</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>ru.itis</groupId>
-            <artifactId>db.unogame</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>ru.itis</groupId>
-            <artifactId>protocol</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+    <artifactId>protocol</artifactId>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>
