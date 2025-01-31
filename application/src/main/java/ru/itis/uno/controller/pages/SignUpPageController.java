@@ -69,6 +69,8 @@ public class SignUpPageController implements RootPaneAware {
                     SignUpResponseContent signUpResponseContent = (SignUpResponseContent) response.content();
                     SessionManager.saveId(signUpResponseContent.getId());
                     SessionManager.saveUsername(username.getText());
+                    Client.getInstance().setUsername(username.getText());
+                    Client.getInstance().setId(signUpResponseContent.getId());
 
                     rootPane.getChildren().clear();
                     FXMLLoaderUtil.loadFXMLToPane("/view/templates/main-page-profile.fxml", rootPane);

@@ -11,7 +11,7 @@ public enum RequestType {
     SIGN_UP(2),
     JOIN_LOBBY(3),
     CREATE_LOBBY(4),
-    EXIT_LOBBY(5);
+    REFRESH_LOBBY(5);
 
     private final int index;
 

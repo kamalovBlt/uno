@@ -53,6 +53,8 @@ public class SignInPageController implements RootPaneAware {
 
                 SessionManager.saveId(content.getId());
                 SessionManager.saveUsername(username.getText());
+                Client.getInstance().setUsername(username.getText());
+                Client.getInstance().setId(content.getId());
 
                 rootPane.getChildren().clear();
                 FXMLLoaderUtil.loadFXMLToPane("/view/templates/main-page-profile.fxml", rootPane);

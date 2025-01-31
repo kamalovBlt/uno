@@ -28,6 +28,7 @@ public class Client {
             socket = new Socket(HOST, PORT);
             clientProtocolService = new ClientProtocolService();
             id = SessionManager.getId();
+            username = SessionManager.getUsername();
 
         } catch (IOException e) {
             throw new RuntimeException(e);

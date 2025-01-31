@@ -1,10 +1,7 @@
 package ru.itis.response;
 
 import ru.itis.Content;
-import ru.itis.response.content.LobbyIdResponseContent;
-import ru.itis.response.content.SignInResponseContent;
-import ru.itis.response.content.SignUpResponseContent;
-import ru.itis.response.content.SuccessContent;
+import ru.itis.response.content.*;
 
 public class ResponseContentFactory {
     public static Content createResponseContent(ResponseType responseType, byte[] data) {
@@ -20,6 +17,12 @@ public class ResponseContentFactory {
             }
             case LOBBY_ID -> {
                 return new LobbyIdResponseContent(data);
+            }
+            case LOBBY_TO_CLIENT -> {
+                return new LobbyToClientResponseContent(data);
+            }
+            case ERROR -> {
+                return new ErrorResponseContent();
             }
             default -> throw new IllegalArgumentException("Invalid response type");
         }

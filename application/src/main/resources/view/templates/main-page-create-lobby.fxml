@@ -10,5 +10,11 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="ru.itis.uno.controller.pages.CreateLobbyPageController">
     <Text fx:id="lobbyId" styleClass="id_text"/>
+
+    <Text fx:id="leftPlayer"/>
+    <Text fx:id="topPlayer"/>
+    <Text fx:id="rightPlayer"/>
+
+    <Button mnemonicParsing="false" text="REFRESH" onAction="#handleRefreshButton"/>
     <Button mnemonicParsing="false" text="BACK" onAction="#handleBackButton"/>
 </VBox>

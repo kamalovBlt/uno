@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import ru.itis.uno.client.SessionManager;
 
 import java.io.IOException;
 
@@ -26,6 +27,7 @@ public class Uno extends Application {
     }
 
     public static void main(String[] args) {
+        SessionManager.clearSession();
         launch();
     }
 
