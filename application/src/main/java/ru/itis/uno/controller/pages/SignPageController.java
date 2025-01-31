@@ -16,7 +16,8 @@ public class SignPageController implements RootPaneAware{
 
     @FXML
     public void handleSignUpButton() {
-
+        rootPane.getChildren().clear();
+        FXMLLoaderUtil.loadFXMLToPane("/view/templates/main-page-sign-up.fxml", rootPane);
     }
 
     @Override

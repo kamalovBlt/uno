@@ -26,6 +26,7 @@ public class MainPageController implements RootPaneAware {
         rootPane.getChildren().clear();
 
         if (authenticationService.checkAuthentication()) {
+
             FXMLLoaderUtil.loadFXMLToPane("/view/templates/main-page-play-go-to-lobby.fxml", rootPane);
         }
 

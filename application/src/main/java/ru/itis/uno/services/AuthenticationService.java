@@ -1,6 +1,5 @@
 package ru.itis.uno.services;
 
-import ru.itis.uno.client.Client;
 import ru.itis.uno.client.SessionManager;
 
 public class AuthenticationService {

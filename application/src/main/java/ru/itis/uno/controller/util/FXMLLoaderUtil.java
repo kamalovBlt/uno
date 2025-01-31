@@ -19,6 +19,7 @@ public class FXMLLoaderUtil {
             FXMLLoader fxmlLoader = new FXMLLoader(FXMLLoaderUtil.class.getResource(fxmlPath));
             Parent scene = fxmlLoader.load();
 
+
             Object controller = fxmlLoader.getController();
             if (controller instanceof RootPaneAware rootPaneAwareController) {
                 rootPaneAwareController.setRootPane(rootPane);

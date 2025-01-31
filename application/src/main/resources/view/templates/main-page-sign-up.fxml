@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Button?>
+<VBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50"
+      AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50"
+      xmlns="http://javafx.com/javafx/11.0.14-internal"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.itis.uno.controller.pages.SignUpPageController">
+
+    <Text text="USERNAME"/>
+    <TextField fx:id="username" styleClass="input-field"/>
+    <Text text="PASSWORD"/>
+    <PasswordField fx:id="password" styleClass="input-field"/>
+
+    <Text text="PASSWORD CONFIRM"/>
+    <PasswordField fx:id="passwordConfirm" styleClass="input-field"/>
+
+    <Button mnemonicParsing="false" onAction="#handleSubmitButton" text="SUBMIT"/>
+
+    <Text fx:id="error"/>
+
+</VBox>

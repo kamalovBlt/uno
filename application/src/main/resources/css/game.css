@@ -1,0 +1,27 @@
+.background-pane {
+    -fx-background-image: url("../images/background/game-background.png");
+    -fx-background-size: stretch;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+
+.card-image {
+    -fx-cursor: hand;
+}
+
+
+.button-uno {
+    -fx-background-color: #ff6347;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.button-uno:hover {
+    -fx-background-color: #ff4500;
+}

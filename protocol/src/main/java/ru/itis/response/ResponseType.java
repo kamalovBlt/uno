@@ -5,7 +5,10 @@ import java.util.Optional;
 public enum ResponseType {
 
     SUCCESS(1),
-    SIGN_IN(2);
+    SIGN_IN(2),
+    SIGN_UP(3),
+    LOBBY_TO_CLIENT(4),
+    LOBBY_ID(5);
 
     private final int index;
 

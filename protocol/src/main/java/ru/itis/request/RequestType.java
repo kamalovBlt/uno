@@ -10,7 +10,8 @@ public enum RequestType {
     SIGN_IN(1),
     SIGN_UP(2),
     JOIN_LOBBY(3),
-    EXIT_LOBBY(4);
+    CREATE_LOBBY(4),
+    EXIT_LOBBY(5);
 
     private final int index;
 

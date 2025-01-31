@@ -6,4 +6,5 @@ module protocol {
     exports ru.itis.response;
     exports ru.itis.response.content;
     exports ru.itis.service;
+    exports ru.itis.lobby;
 }
