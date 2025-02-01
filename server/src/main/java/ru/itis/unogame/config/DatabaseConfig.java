@@ -6,65 +6,51 @@ import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Properties;
 
+@Configuration
 public class DatabaseConfig {
 
-    private static volatile DatabaseConfig instance;
+    @Value("${db.datasource.url}")
+    private String url;
 
-    private final DataSource dataSource;
+    @Value("${db.datasource.username}")
+    private String username;
 
-    private DatabaseConfig() {
+    @Value("${db.datasource.password}")
+    private String password;
 
-        try {
+    @Value("${db.datasource.driverClassName}")
+    private String driverClassName;
 
-            Class.forName("org.postgresql.Driver");
+    @Value("${db.hikari.maximumPoolSize}")
+    private int maxPoolSize;
 
-            Properties applicationProperties = new Properties();
-            applicationProperties.load(new FileInputStream("server/src/main/resources/application.properties"));
+    @Value("${db.liquibase.changelogFile}")
+    private String pathToChangelog;
 
-            HikariConfig hikariConfig = new HikariConfig();
-            hikariConfig.setJdbcUrl(applicationProperties.getProperty("db.datasource.url"));
-            hikariConfig.setUsername(applicationProperties.getProperty("db.datasource.username"));
-            hikariConfig.setPassword(applicationProperties.getProperty("db.datasource.password"));
-            hikariConfig.setDriverClassName(applicationProperties.getProperty("db.datasource.driverClassName"));
-            hikariConfig.setMaximumPoolSize(Integer.parseInt(applicationProperties.getProperty("db.hikari.maximumPoolSize")));
-
-            dataSource = new HikariDataSource(hikariConfig);
-
-            Liquibase liquibase = new Liquibase(
-                    applicationProperties.getProperty("db.liquibase.changelogFile"),
+    @Bean
+    public DataSource dataSource() {
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(url);
+        hikariConfig.setUsername(username);
+        hikariConfig.setPassword(password);
+        hikariConfig.setDriverClassName(driverClassName);
+        hikariConfig.setMaximumPoolSize(maxPoolSize);
+        return new HikariDataSource(hikariConfig);
+    }
+    @Bean
+    public Liquibase liquibase(DataSource dataSource) throws SQLException, LiquibaseException {
+        var liquibase = new Liquibase(
+                    pathToChangelog,
                     new ClassLoaderResourceAccessor(),
                     new JdbcConnection(dataSource.getConnection()));
-
-            liquibase.update();
-
-        } catch (IOException | ClassNotFoundException | SQLException | LiquibaseException e) {
-            throw new RuntimeException(e);
-        }
-
-
+        liquibase.update();
+        return liquibase;
     }
-
-    public static DatabaseConfig getInstance() {
-        if (instance == null) {
-            synchronized (DatabaseConfig.class) {
-                if (instance == null) {
-                    instance = new DatabaseConfig();
-                }
-            }
-        }
-        return instance;
-    }
-
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
-
 }
