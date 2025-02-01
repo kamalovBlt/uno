@@ -22,7 +22,7 @@ public class ResponseContentFactory {
                 return new LobbyToClientResponseContent(data);
             }
             case ERROR -> {
-                return new ErrorResponseContent();
+                return new ErrorResponseContent(data);
             }
             default -> throw new IllegalArgumentException("Invalid response type");
         }
