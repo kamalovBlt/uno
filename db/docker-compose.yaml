@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwerty007
+      - POSTGRES_DB=unogame   # postgres password
+    ports:
+      - "5432:5432"             # postgres port
+

@@ -1,3 +1,7 @@
 package ru.itis.lobby;
 
-public record Player(int id, String username) {}
+import ru.itis.cards.Card;
+
+import java.util.List;
+
+public record Player(int id, String username, List<Card> cards) {}

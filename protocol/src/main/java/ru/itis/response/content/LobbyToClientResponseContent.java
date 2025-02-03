@@ -1,68 +1,51 @@
 package ru.itis.response.content;
 
+import lombok.Getter;
 import ru.itis.Content;
-import ru.itis.lobby.Lobby;
 import ru.itis.lobby.Player;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
+/* Хранит список игроков, в порядке по часовой стрелке, начиная от самого получателя включительно.
+Т.е если отправляется клиенту с username user, то в списке будет сначала user, leftUser, topUser, rightUser
+*/
+@Getter
 public class LobbyToClientResponseContent implements Content {
 
-    private final Lobby lobby;
+    private final List<Player> players;
 
-    public LobbyToClientResponseContent(Lobby lobby) {
-        this.lobby = lobby;
+    public LobbyToClientResponseContent(List<Player> players) {
+        this.players = players;
     }
 
     public LobbyToClientResponseContent(byte[] data) {
-
         String content = new String(data);
         String[] playersData = content.split("\\|\\|");
-
-        if (playersData.length != 3) {
-            throw new IllegalArgumentException("Invalid data format");
+        players = new ArrayList<>();
+        for (String playerString : playersData) {
+            players.add(parsePlayer(playerString));
         }
-
-        Player leftPlayer = parsePlayer(playersData[0]);
-        Player topPlayer = parsePlayer(playersData[1]);
-        Player rightPlayer = parsePlayer(playersData[2]);
-
-        this.lobby = new Lobby(leftPlayer, topPlayer, rightPlayer);
     }
 
     @Override
     public byte[] toByteArray() {
-
-        Player leftPlayer = lobby.leftPlayer();
-        Player topPlayer = lobby.topPlayer();
-        Player rightPlayer = lobby.rightPlayer();
-
-        String content = "player1&id=%s&username=%s||player2&id=%s&username=%s||player3&id=%s&username=%s".formatted(
-                Optional.ofNullable(leftPlayer).map(Player::id).orElse(0),
-                Optional.ofNullable(leftPlayer).map(Player::username).orElse("0"),
-                Optional.ofNullable(topPlayer).map(Player::id).orElse(0),
-                Optional.ofNullable(topPlayer).map(Player::username).orElse("0"),
-                Optional.ofNullable(rightPlayer).map(Player::id).orElse(0),
-                Optional.ofNullable(rightPlayer).map(Player::username).orElse("0")
-        );
-
-        return content.getBytes();
+        String pattern = "id=%s&username=%s";
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < players.size(); ++i) {
+            Player player = players.get(i);
+            output.append(pattern.formatted(player.id(), player.username()));
+            if (i != players.size() - 1) {
+                output.append("||");
+            }
+        }
+        return output.toString().getBytes();
     }
 
     private Player parsePlayer(String playerData) {
         String[] parts = playerData.split("&");
-        if (parts.length != 3) {
-            throw new IllegalArgumentException("Invalid player data format");
-        }
-        int playerId = Integer.parseInt(parts[1].split("=")[1]);
-        String playerName = parts[2].split("=")[1];
-
-        return new Player(playerId, playerName);
+        int playerId = Integer.parseInt(parts[0].split("=")[1]);
+        String playerName = parts[1].split("=")[1];
+        return new Player(playerId, playerName, null);
     }
-
-    public Lobby getLobby() {
-        return lobby;
-    }
-
 }
