@@ -21,8 +21,14 @@ public class RequestContentFactory {
             case JOIN_LOBBY -> {
                 return new JoinLobbyRequestContent(data);
             }
-            case REFRESH_LOBBY -> {
-                return new RefreshLobbyRequestContent(data);
+            case COVER_CARD -> {
+                return new CoverCardRequestContent(data);
+            }
+            case TAKE_CARD_FROM_DECK -> {
+                return new TakeCardFromDeckRequestContent(data);
+            }
+            case CALL_UNO -> {
+                return new CallUnoRequestContent(data);
             }
 
             default -> throw new IllegalArgumentException("Unsupported request type: " + requestType);

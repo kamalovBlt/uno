@@ -24,6 +24,9 @@ public class ResponseContentFactory {
             case ERROR -> {
                 return new ErrorResponseContent(data);
             }
+            case GAME_STATE -> {
+                return new GameStateResponseContent(data);
+            }
             default -> throw new IllegalArgumentException("Invalid response type");
         }
     }

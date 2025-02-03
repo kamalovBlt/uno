@@ -15,6 +15,5 @@
     <Text fx:id="topPlayer"/>
     <Text fx:id="rightPlayer"/>
 
-    <Button mnemonicParsing="false" text="REFRESH" onAction="#handleRefreshButton"/>
     <Button mnemonicParsing="false" text="BACK" onAction="#handleBackButton"/>
 </VBox>

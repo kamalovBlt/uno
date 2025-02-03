@@ -6,15 +6,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import ru.itis.lobby.GameState;
 import ru.itis.service.ClientProtocolService;
 import ru.itis.uno.client.Client;
-import ru.itis.lobby.Lobby;
 
 public class GameController {
 
     private Client client;
     private ClientProtocolService clientProtocolService;
-    private Lobby lobby;
+    private GameState gameState;
 
     @FXML
     private HBox deck;

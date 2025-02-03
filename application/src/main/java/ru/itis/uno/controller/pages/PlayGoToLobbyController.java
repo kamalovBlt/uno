@@ -1,23 +1,30 @@
 package ru.itis.uno.controller.pages;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import ru.itis.lobby.Lobby;
+import javafx.stage.Stage;
 import ru.itis.request.Request;
 import ru.itis.request.RequestType;
 import ru.itis.request.content.JoinLobbyRequestContent;
 import ru.itis.response.Response;
 import ru.itis.response.ResponseType;
+import ru.itis.response.content.ErrorResponseContent;
 import ru.itis.response.content.LobbyToClientResponseContent;
 import ru.itis.service.ClientProtocolService;
 import ru.itis.uno.client.Client;
 import ru.itis.uno.controller.util.FXMLLoaderUtil;
 
+import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
@@ -37,6 +44,8 @@ public class PlayGoToLobbyController implements RootPaneAware {
 
     @FXML
     private Text info;
+    @FXML
+    private Text lobbyId;
 
     @FXML
     private Text error;
@@ -71,10 +80,9 @@ public class PlayGoToLobbyController implements RootPaneAware {
 
     @FXML
     public void handleSubmitButton(ActionEvent actionEvent) {
-
-
         if (!inputField.getText().isEmpty()) {
             int lobbyId = Integer.parseInt(inputField.getText());
+            this.lobbyId.setText("LobbyId: " + lobbyId);
             ClientProtocolService clientProtocolService = Client.getInstance().getClientProtocolService();
             clientProtocolService.send(
                     new Request(
@@ -87,41 +95,64 @@ public class PlayGoToLobbyController implements RootPaneAware {
                     ),
                     Client.getInstance().getSocket()
             );
-
             Optional<Response> optionalResponse = clientProtocolService.read(Client.getInstance().getSocket());
             if (optionalResponse.isPresent()) {
                 Response response = optionalResponse.get();
                 if (response.responseType().equals(ResponseType.LOBBY_TO_CLIENT)) {
                     LobbyToClientResponseContent lobbyToClientResponseContent = (LobbyToClientResponseContent) response.content();
-                    Lobby lobby = lobbyToClientResponseContent.getLobby();
-                    waiting(lobby);
+                    int lobbySize = lobbyToClientResponseContent.getPlayers().size();
+                    submitButton.setVisible(false);
+                    inputField.setVisible(false);
+                    info.setText("Waiting all players, current lobby size: " + lobbySize);
+                    WaitServerAnswerRunnable runnable = new WaitServerAnswerRunnable(clientProtocolService, info, actionEvent);
+                    new Thread(runnable).start();
                 }
-
+                if (response.responseType().equals(ResponseType.GAME_STATE)) {
+                    // этот блок кода выполняется, если подключающийся игрок - последний игрок лобби
+                    // TODO тут открывается сцена с игрой, нужно отрисовывать в ней состояние из response-а
+                    setGameScene(actionEvent);
+                }
                 if (response.responseType().equals(ResponseType.ERROR)) {
-                    error.setText("Invalid lobby or lobby full");
+                    error.setText(new ErrorResponseContent(response.content().toByteArray()).getMessage());
                 }
-
             }
         }
-        else {
-            error.setText("Please enter a number");
+    }
+
+    private record WaitServerAnswerRunnable(
+            ClientProtocolService clientProtocolService,
+            Text info,
+            ActionEvent actionEvent
+    ) implements Runnable {
+        @Override
+        public void run() {
+            Optional<Response> optionalRunnableResponse = clientProtocolService.read(Client.getInstance().getSocket());
+            while (optionalRunnableResponse.isPresent()) {
+                Response runnableResponse = optionalRunnableResponse.get();
+                if (runnableResponse.responseType().equals(ResponseType.LOBBY_TO_CLIENT)) {
+                    LobbyToClientResponseContent runnableLobbyToClientResponseContent = (LobbyToClientResponseContent) runnableResponse.content();
+                    int runnableLobbySize = runnableLobbyToClientResponseContent.getPlayers().size();
+                    info.setText("Waiting all players, current lobby size: " + runnableLobbySize);
+                    optionalRunnableResponse = clientProtocolService.read(Client.getInstance().getSocket());
+                }
+                if (runnableResponse.responseType().equals(ResponseType.GAME_STATE)) {
+                    // этот блок кода выполняется, если этот игрок подключился НЕ последним, то есть он еще кого то ждал
+                    // TODO тут открывается сцена с игрой, нужно отрисовывать в ней состояние из response-а
+                    Platform.runLater(() -> setGameScene(actionEvent));
+                    break;
+                }
+            }
         }
+    }
 
-        /*try {
-
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/templates/game/game.fxml")));
+    private static void setGameScene(ActionEvent actionEvent) {
+        Parent root;
+        try {
+            root = FXMLLoader.load(Objects.requireNonNull(PlayGoToLobbyController.class.getResource("/view/templates/game/game.fxml")));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.getScene().setRoot(root);
-
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }*/
+        }
     }
-
-    private void waiting(Lobby lobby) {
-        submitButton.setDisable(true);
-        backButton.setDisable(true);
-        this.info.setText("Ожидаем начала игры. LOBBY ID=" + Integer.parseInt(inputField.getText()));
-    }
-
 }
