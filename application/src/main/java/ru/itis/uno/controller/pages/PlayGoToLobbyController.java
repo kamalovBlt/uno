@@ -112,6 +112,7 @@ public class PlayGoToLobbyController implements RootPaneAware {
                     new Thread(runnable).start();
                 }
                 if (response.responseType().equals(ResponseType.GAME_STATE)) {
+                    Client.getInstance().setCurrentGameId(lobbyId);
                     setGameScene(actionEvent, response, getClass().getResource("/view/templates/game/game.fxml"));
                 }
                 if (response.responseType().equals(ResponseType.ERROR)) {

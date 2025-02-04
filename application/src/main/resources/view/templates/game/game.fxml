@@ -5,6 +5,7 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Polygon?>
 <AnchorPane
         fx:id="gamePane"
         styleClass="background-pane"
@@ -15,35 +16,50 @@
 
     <HBox fx:id="topHBox" spacing="10" alignment="CENTER" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="50"
           AnchorPane.rightAnchor="50">
-        <Text text="Верх"/>
     </HBox>
 
     <VBox fx:id="leftVBox" spacing="10" alignment="CENTER" AnchorPane.topAnchor="70" AnchorPane.bottomAnchor="70"
           AnchorPane.leftAnchor="10">
-        <Text text="Лево"/>
     </VBox>
 
     <HBox fx:id="bottomHBox" spacing="10" alignment="CENTER" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="50"
           AnchorPane.rightAnchor="50">
-        <Text text="Низ"/>
-
     </HBox>
+
+    <StackPane fx:id="triangleContainer"
+               AnchorPane.topAnchor="250"
+               AnchorPane.leftAnchor="500"
+               AnchorPane.rightAnchor="500"
+               AnchorPane.bottomAnchor="250">
+        <Polygon fx:id="triangle" fill="blue"/>
+    </StackPane>
+
 
     <VBox fx:id="rightVBox" spacing="10" alignment="CENTER" AnchorPane.topAnchor="70" AnchorPane.bottomAnchor="70"
           AnchorPane.rightAnchor="10">
-        <Text text="Право"/>
-
     </VBox>
 
-    <VBox fx:id="centerVBox" spacing="10" alignment="CENTER">
+    <StackPane fx:id="centerStackPane"
+               AnchorPane.topAnchor="300"
+               AnchorPane.leftAnchor="600"
+               AnchorPane.bottomAnchor="300"
+               AnchorPane.rightAnchor="600">
+    </StackPane>
 
-    </VBox>
 
-    <HBox fx:id="deck" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" >
-        <ImageView fitHeight="130" fitWidth="130" preserveRatio="true" onMouseClicked="#handleTakeCard" styleClass="card-image">
+    <Text fx:id="bottomPlayerText" textAlignment="CENTER" text="НИЗ" AnchorPane.bottomAnchor="130" AnchorPane.leftAnchor="760"/>
+    <Text fx:id="topPlayerText" textAlignment="CENTER" text="ВВЕРХ" AnchorPane.topAnchor="130" AnchorPane.leftAnchor="760"/>
+
+    <Text fx:id="leftPlayerText" textAlignment="CENTER" text="ЛЕВЫЙ" AnchorPane.leftAnchor="130" AnchorPane.topAnchor="420" rotate="90"/>
+    <Text fx:id="rightPlayerText" textAlignment="CENTER" text="ПРАВЫЙ" AnchorPane.rightAnchor="130" AnchorPane.topAnchor="420" rotate="-90"/>
+
+    <HBox fx:id="deck" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10">
+        <ImageView fitHeight="130" fitWidth="130" preserveRatio="true" onMouseClicked="#handleTakeCard"
+                   styleClass="card-image">
             <Image url="@../../../images/cards/reverse-left.png"/>
         </ImageView>
     </HBox>
-    <Button text="UNO" onAction="#handleUnoButton" AnchorPane.bottomAnchor="30" AnchorPane.rightAnchor="30" styleClass="button-uno"/>
+    <Button text="UNO" onAction="#handleUnoButton" AnchorPane.bottomAnchor="30" AnchorPane.rightAnchor="30"
+            styleClass="button-uno"/>
 
 </AnchorPane>
