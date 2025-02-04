@@ -1,10 +1,8 @@
 package ru.itis.uno.controller.pages;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import ru.itis.uno.client.Client;
 import ru.itis.uno.client.SessionManager;
 import ru.itis.uno.controller.util.FXMLLoaderUtil;
 

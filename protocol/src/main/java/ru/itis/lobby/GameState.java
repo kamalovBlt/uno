@@ -28,4 +28,5 @@ public class GameState {
                 "\ncurrentMovePlayerId=" + currentMovePlayerId +
                 '}';
     }
+
 }

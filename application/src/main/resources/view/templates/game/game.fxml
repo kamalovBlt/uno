@@ -5,7 +5,6 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<?import javafx.scene.shape.Polygon?>
 <AnchorPane
         fx:id="gamePane"
         styleClass="background-pane"
@@ -26,18 +25,19 @@
           AnchorPane.rightAnchor="50">
     </HBox>
 
-    <StackPane fx:id="triangleContainer"
-               AnchorPane.topAnchor="250"
-               AnchorPane.leftAnchor="500"
-               AnchorPane.rightAnchor="500"
-               AnchorPane.bottomAnchor="250">
-        <Polygon fx:id="triangle" fill="blue"/>
-    </StackPane>
-
-
     <VBox fx:id="rightVBox" spacing="10" alignment="CENTER" AnchorPane.topAnchor="70" AnchorPane.bottomAnchor="70"
           AnchorPane.rightAnchor="10">
     </VBox>
+
+    <StackPane
+               AnchorPane.topAnchor="200"
+               AnchorPane.leftAnchor="500"
+               AnchorPane.bottomAnchor="200"
+               AnchorPane.rightAnchor="500">
+        <ImageView fx:id="arrow" fitHeight="400" fitWidth="400">
+            <Image url="@../../../images/arrow.png"/>
+        </ImageView>
+    </StackPane>
 
     <StackPane fx:id="centerStackPane"
                AnchorPane.topAnchor="300"
@@ -53,11 +53,12 @@
     <Text fx:id="leftPlayerText" textAlignment="CENTER" text="ЛЕВЫЙ" AnchorPane.leftAnchor="130" AnchorPane.topAnchor="420" rotate="90"/>
     <Text fx:id="rightPlayerText" textAlignment="CENTER" text="ПРАВЫЙ" AnchorPane.rightAnchor="130" AnchorPane.topAnchor="420" rotate="-90"/>
 
-    <HBox fx:id="deck" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10">
+    <HBox AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10">
         <ImageView fitHeight="130" fitWidth="130" preserveRatio="true" onMouseClicked="#handleTakeCard"
                    styleClass="card-image">
             <Image url="@../../../images/cards/reverse-left.png"/>
         </ImageView>
+        <Text fx:id="remainCards"/>
     </HBox>
     <Button text="UNO" onAction="#handleUnoButton" AnchorPane.bottomAnchor="30" AnchorPane.rightAnchor="30"
             styleClass="button-uno"/>

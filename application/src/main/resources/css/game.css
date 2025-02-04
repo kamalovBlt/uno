@@ -9,6 +9,12 @@
 .card-image {
     -fx-cursor: hand;
 }
+.text {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 20px;
+    -fx-fill: #333333;
+    -fx-font-weight: bold;
+}
 
 
 .button-uno {

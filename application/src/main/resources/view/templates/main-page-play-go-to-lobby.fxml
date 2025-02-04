@@ -19,6 +19,5 @@
     <Text fx:id="lobbyId"/>
 
     <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleSubmitButton" text="SUBMIT"/>
-    <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleBackButton" text="BACK"/>
 
 </VBox>

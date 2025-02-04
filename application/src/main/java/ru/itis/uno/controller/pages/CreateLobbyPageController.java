@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ru.itis.lobby.Player;
@@ -19,14 +18,12 @@ import ru.itis.response.content.LobbyToClientResponseContent;
 import ru.itis.service.ClientProtocolService;
 import ru.itis.uno.client.Client;
 import ru.itis.uno.controller.pages.game.GameController;
-import ru.itis.uno.controller.util.FXMLLoaderUtil;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-public class CreateLobbyPageController implements RootPaneAware {
+public class CreateLobbyPageController {
 
     @FXML
     private Text leftPlayer;
@@ -40,13 +37,6 @@ public class CreateLobbyPageController implements RootPaneAware {
 
     @FXML
     private Text lobbyId;
-
-    private Pane rootPane;
-
-    @Override
-    public void setRootPane(Pane pane) {
-        this.rootPane = pane;
-    }
 
     @FXML
     public void initialize() {
@@ -72,12 +62,6 @@ public class CreateLobbyPageController implements RootPaneAware {
         }
         WaitServerAnswerRunnable runnable = new WaitServerAnswerRunnable(clientProtocolService, leftPlayer, topPlayer, rightPlayer);
         new Thread(runnable).start();
-    }
-
-    @FXML
-    private void handleBackButton() {
-        rootPane.getChildren().clear();
-        FXMLLoaderUtil.loadFXMLToPane("/view/templates/main-page-main-buttons.fxml", rootPane);
     }
 
     private record WaitServerAnswerRunnable(

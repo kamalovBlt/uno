@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ru.itis.request.Request;
@@ -23,21 +22,17 @@ import ru.itis.response.content.LobbyToClientResponseContent;
 import ru.itis.service.ClientProtocolService;
 import ru.itis.uno.client.Client;
 import ru.itis.uno.controller.pages.game.GameController;
-import ru.itis.uno.controller.util.FXMLLoaderUtil;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 import static javafx.scene.control.TextFormatter.*;
 
 
-public class PlayGoToLobbyController implements RootPaneAware {
+public class PlayGoToLobbyController {
 
-    @FXML
-    private Button backButton;
 
     @FXML
     private Button submitButton;
@@ -52,19 +47,6 @@ public class PlayGoToLobbyController implements RootPaneAware {
 
     @FXML
     private Text error;
-
-    private Pane rootPane;
-
-    @FXML
-    private void handleBackButton() {
-        rootPane.getChildren().clear();
-        FXMLLoaderUtil.loadFXMLToPane("/view/templates/main-page-main-buttons.fxml", rootPane);
-    }
-
-    @Override
-    public void setRootPane(Pane pane) {
-        this.rootPane = pane;
-    }
 
     @FXML
     public void initialize() {

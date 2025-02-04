@@ -62,13 +62,13 @@ public class CardLoader {
 
         });
 
-        cardImageView.setOnMouseEntered(event -> {
+        cardImageView.setOnMouseEntered(_ -> {
             cardImageView.setCursor(Cursor.HAND);
             cardImageView.setScaleX(1.2);
             cardImageView.setScaleY(1.2);
         });
 
-        cardImageView.setOnMouseExited(event -> {
+        cardImageView.setOnMouseExited(_ -> {
             cardImageView.setCursor(Cursor.DEFAULT);
             cardImageView.setScaleX(1.0);
             cardImageView.setScaleY(1.0);

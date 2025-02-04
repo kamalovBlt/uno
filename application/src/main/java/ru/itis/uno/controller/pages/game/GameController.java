@@ -1,13 +1,21 @@
 package ru.itis.uno.controller.pages.game;
 
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import ru.itis.cards.Card;
 import ru.itis.lobby.GameState;
 import ru.itis.lobby.Player;
@@ -28,12 +36,17 @@ import java.util.Optional;
 
 public class GameController {
 
-    private Client client;
+    @FXML
+    private AnchorPane gamePane;
+
     private ClientProtocolService clientProtocolService;
     private GameState gameState;
 
     @FXML
-    private HBox deck;
+    private Text remainCards;
+
+    @FXML
+    private ImageView arrow;
 
     @FXML
     private StackPane centerStackPane;
@@ -67,11 +80,8 @@ public class GameController {
     private VBox rightVBox;
 
     @FXML
-    private Pane gamePane;
-
-    @FXML
     public void initialize() {
-        this.client = Client.getInstance();
+        Client client = Client.getInstance();
         this.clientProtocolService = client.getClientProtocolService();
     }
 
@@ -131,6 +141,19 @@ public class GameController {
                             ErrorResponseContent content = (ErrorResponseContent) runnableResponse.content();
                             System.out.println(content.getMessage());
                         }
+                        if (runnableResponse.responseType().equals(ResponseType.GAME_IS_OVER)) {
+                            Platform.runLater(() -> {
+                                try {
+                                    Scene scene = gamePane.getScene();
+                                    gamePane.getChildren().clear();
+                                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/main.fxml"));
+                                    Parent root = fxmlLoader.load();
+                                    scene.setRoot(root);
+                                } catch (Exception e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -156,6 +179,8 @@ public class GameController {
     public void updateScene(GameState newGameState) {
         Platform.runLater(() -> {
             this.gameState = newGameState;
+
+            remainCards.setText(String.valueOf(gameState.getNumberOfRemainingCards()));
 
             centerStackPane.getChildren().clear();
             centerStackPane.getChildren().add(CardLoader.getCardImageView(gameState.getCurrentCard()));
@@ -200,18 +225,79 @@ public class GameController {
             }
 
             resetPlayerTextColors();
+
+            String currentMovePlayer;
+
             int currentMovePlayerId = gameState.getCurrentMovePlayerId();
             if (currentMovePlayerId == bottomPlayerId) {
                 bottomPlayerText.setFill(Color.RED);
+                currentMovePlayer = "bottom";
             } else if (currentMovePlayerId == topPlayerId) {
                 topPlayerText.setFill(Color.RED);
+                currentMovePlayer = "top";
             } else if (currentMovePlayerId == rightPlayerId) {
                 rightPlayerText.setFill(Color.RED);
-            } else if (currentMovePlayerId == leftPlayerId) {
+                currentMovePlayer = "right";
+            } else {
                 leftPlayerText.setFill(Color.RED);
+                currentMovePlayer = "left";
             }
+
+            if (lastMovePlayer == null) {
+                angle = 360;
+            } else {
+                switch (lastMovePlayer) {
+                    case "bottom":
+                        angle = switch (currentMovePlayer) {
+                            case "left" -> 360;
+                            case "right" -> -360;
+                            default -> angle;
+                        };
+                        break;
+                    case "left":
+                        angle = switch (currentMovePlayer) {
+                            case "top" -> 360;
+                            case "bottom" -> -360;
+                            default -> angle;
+                        };
+                        break;
+                    case "top":
+                        angle = switch (currentMovePlayer) {
+                            case "right" -> 360;
+                            case "left" -> -360;
+                            default -> angle;
+                        };
+                        break;
+                    case "right":
+                        angle = switch (currentMovePlayer) {
+                            case "bottom" -> 360;
+                            case "top" -> -360;
+                            default -> angle;
+                        };
+                        break;
+                }
+            }
+
+            lastMovePlayer = currentMovePlayer;
+
+            if (currentRotateTransition == null) {
+                currentRotateTransition = new RotateTransition(Duration.seconds(2), arrow);
+                currentRotateTransition.setByAngle(angle);
+                currentRotateTransition.setInterpolator(Interpolator.LINEAR);
+                currentRotateTransition.setCycleCount(Animation.INDEFINITE);
+                currentRotateTransition.play();
+            } else {
+                currentRotateTransition.stop();
+                currentRotateTransition.setByAngle(angle);
+                currentRotateTransition.play();
+            }
+
         });
     }
+
+    private RotateTransition currentRotateTransition;
+    private String lastMovePlayer;
+    private int angle = 360;
 
     private void resetPlayerTextColors() {
         bottomPlayerText.setFill(Color.BLACK);
@@ -219,7 +305,6 @@ public class GameController {
         leftPlayerText.setFill(Color.BLACK);
         rightPlayerText.setFill(Color.BLACK);
     }
-
 
 }
 
