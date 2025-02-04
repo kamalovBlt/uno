@@ -1,21 +1,20 @@
 package ru.itis.uno.controller.pages.game;
 
-import javafx.animation.RotateTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import ru.itis.cards.Card;
 import ru.itis.lobby.GameState;
 import ru.itis.lobby.Player;
+import ru.itis.request.Request;
+import ru.itis.request.RequestType;
+import ru.itis.request.content.CallUnoRequestContent;
+import ru.itis.request.content.TakeCardFromDeckRequestContent;
 import ru.itis.response.Response;
 import ru.itis.response.ResponseType;
 import ru.itis.response.content.ErrorResponseContent;
@@ -35,9 +34,6 @@ public class GameController {
 
     @FXML
     private HBox deck;
-
-    @FXML
-    private Line arrow;
 
     @FXML
     private StackPane centerStackPane;
@@ -73,29 +69,20 @@ public class GameController {
     @FXML
     private Pane gamePane;
 
-    private RotateTransition rotateTransition;
-    private boolean clockwise = true;
-
     @FXML
     public void initialize() {
         this.client = Client.getInstance();
         this.clientProtocolService = client.getClientProtocolService();
-
-        if (arrow == null) {
-            arrow = new Line(200, 100, 250, 50);
-            arrow.setStroke(Color.RED);
-            arrow.setStrokeWidth(3);
-            gamePane.getChildren().add(arrow);
-        }
-
-        rotateTransition = new RotateTransition(Duration.seconds(2), arrow);
-        rotateTransition.setByAngle(clockwise ? 360 : -360);
-        rotateTransition.setCycleCount(RotateTransition.INDEFINITE);
-
     }
 
-    public void handleUnoButton(ActionEvent actionEvent) {
-
+    public void handleUnoButton() {
+        clientProtocolService.send(
+                new Request(
+                        RequestType.CALL_UNO,
+                        new CallUnoRequestContent(Client.getInstance().getCurrentGameId(), Client.getInstance().getId())
+                ),
+                Client.getInstance().getSocket()
+        );
     }
 
     public void initialRendering(GameStateResponseContent gameStateResponseContent) {
@@ -125,7 +112,6 @@ public class GameController {
 
         getServerAnswer();
 
-        startArrowAnimation();
 
     }
 
@@ -140,7 +126,6 @@ public class GameController {
                             GameStateResponseContent gameStateResponseContent = (GameStateResponseContent) runnableResponse.content();
                             gameState = gameStateResponseContent.getGameState();
                             updateScene(gameState);
-                            updateArrowDirection();
                         }
                         if (runnableResponse.responseType().equals(ResponseType.ERROR)) {
                             ErrorResponseContent content = (ErrorResponseContent) runnableResponse.content();
@@ -155,10 +140,17 @@ public class GameController {
 
         networkThread.setDaemon(true);
         networkThread.start();
+
     }
 
-    public void handleTakeCard(MouseEvent mouseEvent) {
-
+    public void handleTakeCard() {
+        clientProtocolService.send(
+                new Request(
+                        RequestType.TAKE_CARD_FROM_DECK,
+                        new TakeCardFromDeckRequestContent(Client.getInstance().getCurrentGameId(), Client.getInstance().getId())
+                ),
+                Client.getInstance().getSocket()
+        );
     }
 
     public void updateScene(GameState newGameState) {
@@ -228,47 +220,6 @@ public class GameController {
         rightPlayerText.setFill(Color.BLACK);
     }
 
-    private void startArrowAnimation() {
-        rotateTransition.play();
-    }
-
-    private void updateArrowDirection() {
-        Platform.runLater(() -> {
-            rotateTransition.stop();
-
-            int currentPlayerIndex = getCurrentPlayerIndex();
-            int nextPlayerIndex = getNextPlayerIndex(currentPlayerIndex);
-
-            if ((nextPlayerIndex - currentPlayerIndex + 4) % 4 == 1) {
-                clockwise = true;
-            } else {
-                clockwise = false;
-            }
-
-            rotateTransition.setByAngle(clockwise ? 360 : -360);
-            rotateTransition.playFromStart();
-        });
-    }
-
-    private int getCurrentPlayerIndex() {
-        int currentPlayerId = gameState.getCurrentMovePlayerId();
-        if (currentPlayerId == bottomPlayerId) return 0;
-        if (currentPlayerId == leftPlayerId) return 1;
-        if (currentPlayerId == topPlayerId) return 2;
-        if (currentPlayerId == rightPlayerId) return 3;
-        return 0;
-    }
-
-    private int getNextPlayerIndex(int currentIndex) {
-        List<Player> players = gameState.getOtherPlayers();
-        players.add(gameState.getReceiverPlayer());
-        int nextPlayerId = players.get((currentIndex + 1) % players.size()).id();
-        if (nextPlayerId == bottomPlayerId) return 0;
-        if (nextPlayerId == leftPlayerId) return 1;
-        if (nextPlayerId == topPlayerId) return 2;
-        if (nextPlayerId == rightPlayerId) return 3;
-        return 0;
-    }
 
 }
 

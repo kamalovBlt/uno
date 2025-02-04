@@ -1,9 +1,8 @@
 package ru.itis.uno.controller.util;
 
-import javafx.scene.Node;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ru.itis.cards.Card;
 import ru.itis.cards.CardColor;
@@ -16,6 +15,7 @@ import ru.itis.service.ClientProtocolService;
 import ru.itis.uno.client.Client;
 
 import java.util.Objects;
+import java.util.Random;
 
 public class CardLoader {
 
@@ -28,26 +28,53 @@ public class CardLoader {
     }
 
     public static void addCardToClientDeck(Card card, ClientProtocolService clientProtocolService, GameState gameState, Pane pane) {
-
         ImageView cardImageView = getCardImageView(card);
         cardImageView.setId(card.type().toString() + card.color().toString() + card.value());
 
         cardImageView.setOnMouseClicked(_ -> {
 
-            System.out.println("Нажал кнопку");
+            CardColor cardColor = null;
 
-            clientProtocolService.send(new Request(
-                            RequestType.COVER_CARD,
-                            new CoverCardRequestContent(card, gameState.getReceiverPlayer().id(), Client.getInstance().getCurrentGameId())),
-                    Client.getInstance().getSocket()
-            );
-
-            System.out.println("Отправил запрос");
+            if (card.type().equals(CardType.COLOR_EDIT) || card.type().equals(CardType.PLUS4)) {
+                Random random = new Random();
+                cardColor = CardColor.values()[random.nextInt(4)];
+            }
+            if (cardColor != null) {
+                clientProtocolService.send(new Request(
+                                RequestType.COVER_CARD,
+                                new CoverCardRequestContent(
+                                        new Card(card.value(), card.type(), cardColor),
+                                        gameState.getReceiverPlayer().id(),
+                                        Client.getInstance().getCurrentGameId())),
+                        Client.getInstance().getSocket()
+                );
+            }
+            else {
+                clientProtocolService.send(new Request(
+                                RequestType.COVER_CARD,
+                                new CoverCardRequestContent(
+                                        card,
+                                        gameState.getReceiverPlayer().id(),
+                                        Client.getInstance().getCurrentGameId())),
+                        Client.getInstance().getSocket()
+                );
+            }
 
         });
 
-        pane.getChildren().add(cardImageView);
+        cardImageView.setOnMouseEntered(event -> {
+            cardImageView.setCursor(Cursor.HAND);
+            cardImageView.setScaleX(1.2);
+            cardImageView.setScaleY(1.2);
+        });
 
+        cardImageView.setOnMouseExited(event -> {
+            cardImageView.setCursor(Cursor.DEFAULT);
+            cardImageView.setScaleX(1.0);
+            cardImageView.setScaleY(1.0);
+        });
+
+        pane.getChildren().add(cardImageView);
     }
 
     public static ImageView getCardImageView(Card card) {
