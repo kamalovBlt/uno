@@ -1,6 +1,7 @@
 package ru.itis.unogame.model;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import ru.itis.cards.Card;
 import ru.itis.cards.CardColor;
 import ru.itis.cards.CardType;
@@ -19,6 +20,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+@Slf4j
 @Getter
 public class Game {
 
@@ -109,6 +111,7 @@ public class Game {
                     .map(pl -> new Player(pl.id(), pl.username(), pl.cards()))
                     .toList();
             GameState gameState = new GameState(currentCard, player, outputPlayers, deck.size(), currentMovePlayerId);
+            log.info("Current game state for player with ID: {}, GameState: {}", gameState.getReceiverPlayer().id(), gameState);
             serverProtocolService.send(new Response(
                     ResponseType.GAME_STATE,
                     new GameStateResponseContent(gameState)),
@@ -127,11 +130,10 @@ public class Game {
             if (!players.getCurrent().cards().contains(card)) {
                 notifyAllPlayers();
                 return;
-            } else {
-                players.getCurrent().cards().remove(card);
             }
             if (card.type() == CardType.PLUS4) {
                 currentCard = card;
+                players.getCurrent().cards().remove(card);
                 players.next();
                 for (int i = 0; i < Math.min(deck.size(), 4); ++i) {
                     players.getCurrent().cards().add(deck.pop());
@@ -139,27 +141,32 @@ public class Game {
             }
             if (card.type() == CardType.COLOR_EDIT) {
                 currentCard = card;
+                players.getCurrent().cards().remove(card);
                 players.next();
             }
             if (card.type() == CardType.NUMBER) {
                 if (card.color() == currentCard.color() || card.value() == currentCard.value()) {
                     currentCard = card;
+                    players.getCurrent().cards().remove(card);
                     players.next();
                 }
             }
             if (card.color() == currentCard.color() || card.type() == currentCard.type()) {
                 if (card.type() == CardType.FLIP) {
                     currentCard = card;
+                    players.getCurrent().cards().remove(card);
                     players.reverse();
                     players.next();
                 }
                 if (card.type() == CardType.BLOCK) {
                     currentCard = card;
+                    players.getCurrent().cards().remove(card);
                     players.next();
                     players.next();
                 }
                 if (card.type() == CardType.PLUS2) {
                     currentCard = card;
+                    players.getCurrent().cards().remove(card);
                     players.next();
                     for (int i = 0; i < Math.min(deck.size(), 2); ++i) {
                         players.getCurrent().cards().add(deck.pop());

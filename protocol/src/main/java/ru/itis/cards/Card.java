@@ -26,4 +26,13 @@ public record Card(int value, CardType type, CardColor color) {
         }
         return Objects.hash(value, type, color);
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "value=" + value +
+                ", type=" + type +
+                ", color=" + color +
+                '}';
+    }
 }

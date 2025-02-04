@@ -18,4 +18,14 @@ public class GameState {
     private int numberOfRemainingCards;
     private int currentMovePlayerId;
 
+    @Override
+    public String toString() {
+        return "GameState{" +
+                "\ncurrentCard=" + currentCard +
+                "\nreceiverPlayer=" + receiverPlayer +
+                "\notherPlayers=" + otherPlayers +
+                "\nnumberOfRemainingCards=" + numberOfRemainingCards +
+                "\ncurrentMovePlayerId=" + currentMovePlayerId +
+                '}';
+    }
 }

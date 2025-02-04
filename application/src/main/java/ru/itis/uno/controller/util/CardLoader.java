@@ -1,9 +1,7 @@
 package ru.itis.uno.controller.util;
 
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ru.itis.cards.Card;
 import ru.itis.cards.CardColor;
