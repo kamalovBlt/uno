@@ -121,7 +121,14 @@ public class Game {
         lock.lock();
         try {
             if (players.getCurrent().id() != playerId) {
+                notifyAllPlayers();
                 return;
+            }
+            if (!players.getCurrent().cards().contains(card)) {
+                notifyAllPlayers();
+                return;
+            } else {
+                players.getCurrent().cards().remove(card);
             }
             if (card.type() == CardType.PLUS4) {
                 currentCard = card;
@@ -169,6 +176,7 @@ public class Game {
         lock.lock();
         try {
             if (players.getCurrent().id() != playerId) {
+                notifyAllPlayers();
                 return;
             }
             if (!deck.isEmpty()) {
@@ -185,14 +193,15 @@ public class Game {
         try {
             if (players.getCurrent().id() == playerId) {
                 idLastPlayerSayUno = playerId;
+                notifyAllPlayers();
                 return;
             }
             if (players.getCurrent().id() != idLastPlayerSayUno && players.getCurrent().cards().size() == 1) {
                 for (int i = 0; i < Math.min(2, deck.size()); ++i) {
                     players.getCurrent().cards().add(deck.pop());
                 }
-                notifyAllPlayers();
             }
+            notifyAllPlayers();
         } finally {
             lock.unlock();
         }
