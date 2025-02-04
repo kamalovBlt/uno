@@ -17,4 +17,5 @@ public class GameState {
     private List<Player> otherPlayers;
     private int numberOfRemainingCards;
     private int currentMovePlayerId;
+
 }

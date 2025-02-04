@@ -5,7 +5,6 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<?import javafx.scene.transform.Rotate?>
 <AnchorPane
         fx:id="gamePane"
         styleClass="background-pane"
@@ -17,55 +16,16 @@
     <HBox fx:id="topHBox" spacing="10" alignment="CENTER" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="50"
           AnchorPane.rightAnchor="50">
         <Text text="Верх"/>
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true" onMouseClicked="#handleMove" styleClass="card-image">
-            <Image url="@../../../images/cards/reverse.png"/>
-        </ImageView>
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true" onMouseClicked="#handleMove" styleClass="card-image">
-            <Image url="@../../../images/cards/reverse.png"/>
-        </ImageView>
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true" onMouseClicked="#handleMove" styleClass="card-image">
-            <Image url="@../../../images/cards/reverse.png"/>
-        </ImageView>
     </HBox>
 
     <VBox fx:id="leftVBox" spacing="10" alignment="CENTER" AnchorPane.topAnchor="70" AnchorPane.bottomAnchor="70"
           AnchorPane.leftAnchor="10">
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true" onMouseClicked="#handleMove" styleClass="card-image">
-            <Image url="@../../../images/cards/reverse-left.png"/>
-        </ImageView>
         <Text text="Лево"/>
     </VBox>
 
     <HBox fx:id="bottomHBox" spacing="10" alignment="CENTER" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="50"
           AnchorPane.rightAnchor="50">
         <Text text="Низ"/>
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
-            <Image url="@../../../images/cards/yellow/yellow0.png"/>
-        </ImageView>
-
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
-            <Image url="@../../../images/cards/yellow/yellow0.png"/>
-        </ImageView>
-
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
-            <Image url="@../../../images/cards/yellow/yellow0.png"/>
-        </ImageView>
-
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
-            <Image url="@../../../images/cards/yellow/yellow0.png"/>
-        </ImageView>
-
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
-            <Image url="@../../../images/cards/yellow/yellow0.png"/>
-        </ImageView>
-
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
-            <Image url="@../../../images/cards/yellow/yellow0.png"/>
-        </ImageView>
-
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
-            <Image url="@../../../images/cards/yellow/yellow0.png"/>
-        </ImageView>
 
     </HBox>
 
@@ -73,14 +33,14 @@
           AnchorPane.rightAnchor="10">
         <Text text="Право"/>
 
-        <ImageView fitHeight="100" fitWidth="100" preserveRatio="true" onMouseClicked="#handleMove" styleClass="card-image">
-            <Image url="@../../../images/cards/reverse-right.png"/>
-        </ImageView>
+    </VBox>
+
+    <VBox fx:id="centerVBox" spacing="10" alignment="CENTER">
 
     </VBox>
 
     <HBox fx:id="deck" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" >
-        <ImageView fitHeight="130" fitWidth="130" preserveRatio="true" onMouseClicked="#handleMove" styleClass="card-image">
+        <ImageView fitHeight="130" fitWidth="130" preserveRatio="true" onMouseClicked="#handleTakeCard" styleClass="card-image">
             <Image url="@../../../images/cards/reverse-left.png"/>
         </ImageView>
     </HBox>

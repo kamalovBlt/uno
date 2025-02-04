@@ -21,6 +21,7 @@ public class Client {
 
     private int id;
     private String username;
+    private int currentGameId;
 
     private Client () {
         try {

@@ -18,12 +18,15 @@ import ru.itis.request.content.JoinLobbyRequestContent;
 import ru.itis.response.Response;
 import ru.itis.response.ResponseType;
 import ru.itis.response.content.ErrorResponseContent;
+import ru.itis.response.content.GameStateResponseContent;
 import ru.itis.response.content.LobbyToClientResponseContent;
 import ru.itis.service.ClientProtocolService;
 import ru.itis.uno.client.Client;
+import ru.itis.uno.controller.pages.game.GameController;
 import ru.itis.uno.controller.util.FXMLLoaderUtil;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -104,19 +107,34 @@ public class PlayGoToLobbyController implements RootPaneAware {
                     submitButton.setVisible(false);
                     inputField.setVisible(false);
                     info.setText("Waiting all players, current lobby size: " + lobbySize);
+                    Client.getInstance().setCurrentGameId(lobbyId);
                     WaitServerAnswerRunnable runnable = new WaitServerAnswerRunnable(clientProtocolService, info, actionEvent);
                     new Thread(runnable).start();
                 }
                 if (response.responseType().equals(ResponseType.GAME_STATE)) {
-                    // этот блок кода выполняется, если подключающийся игрок - последний игрок лобби
-                    // TODO тут открывается сцена с игрой, нужно отрисовывать в ней состояние из response-а
-                    setGameScene(actionEvent);
+                    setGameScene(actionEvent, response, getClass().getResource("/view/templates/game/game.fxml"));
                 }
                 if (response.responseType().equals(ResponseType.ERROR)) {
                     error.setText(new ErrorResponseContent(response.content().toByteArray()).getMessage());
                 }
             }
         }
+    }
+
+    private static void setGameScene(ActionEvent actionEvent, Response response, URL resource) {
+        Platform.runLater(() -> {
+            Parent root;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(resource);
+                root = fxmlLoader.load();
+                GameController gameController = fxmlLoader.getController();
+                gameController.initialRendering((GameStateResponseContent) response.content());
+                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                stage.getScene().setRoot(root);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private record WaitServerAnswerRunnable(
@@ -136,23 +154,10 @@ public class PlayGoToLobbyController implements RootPaneAware {
                     optionalRunnableResponse = clientProtocolService.read(Client.getInstance().getSocket());
                 }
                 if (runnableResponse.responseType().equals(ResponseType.GAME_STATE)) {
-                    // этот блок кода выполняется, если этот игрок подключился НЕ последним, то есть он еще кого то ждал
-                    // TODO тут открывается сцена с игрой, нужно отрисовывать в ней состояние из response-а
-                    Platform.runLater(() -> setGameScene(actionEvent));
+                    setGameScene(actionEvent, runnableResponse, getClass().getResource("/view/templates/game/game.fxml"));
                     break;
                 }
             }
-        }
-    }
-
-    private static void setGameScene(ActionEvent actionEvent) {
-        Parent root;
-        try {
-            root = FXMLLoader.load(Objects.requireNonNull(PlayGoToLobbyController.class.getResource("/view/templates/game/game.fxml")));
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            stage.getScene().setRoot(root);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }

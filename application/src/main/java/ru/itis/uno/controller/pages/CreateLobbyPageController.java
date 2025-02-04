@@ -13,10 +13,12 @@ import ru.itis.request.RequestType;
 import ru.itis.request.content.CreateLobbyRequestContent;
 import ru.itis.response.Response;
 import ru.itis.response.ResponseType;
+import ru.itis.response.content.GameStateResponseContent;
 import ru.itis.response.content.LobbyIdResponseContent;
 import ru.itis.response.content.LobbyToClientResponseContent;
 import ru.itis.service.ClientProtocolService;
 import ru.itis.uno.client.Client;
+import ru.itis.uno.controller.pages.game.GameController;
 import ru.itis.uno.controller.util.FXMLLoaderUtil;
 
 import java.io.IOException;
@@ -65,6 +67,7 @@ public class CreateLobbyPageController implements RootPaneAware {
                 LobbyIdResponseContent lobbyIdResponseContent = (LobbyIdResponseContent) response.content();
                 int lobbyId = lobbyIdResponseContent.getId();
                 this.lobbyId.setText("ID: %s".formatted(String.valueOf(lobbyId)));
+                client.setCurrentGameId(lobbyId);
             }
         }
         WaitServerAnswerRunnable runnable = new WaitServerAnswerRunnable(clientProtocolService, leftPlayer, topPlayer, rightPlayer);
@@ -99,11 +102,13 @@ public class CreateLobbyPageController implements RootPaneAware {
                     optionalRunnableResponse = clientProtocolService.read(Client.getInstance().getSocket());
                 }
                 if (response.responseType().equals(ResponseType.GAME_STATE)) {
-                    // TODO тут открывается сцена с игрой, нужно отрисовывать в ней состояние из response-а
                     Platform.runLater(() -> {
                         Parent root;
                         try {
-                            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/templates/game/game.fxml")));
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/templates/game/game.fxml"));
+                            root = fxmlLoader.load();
+                            GameController gameController = fxmlLoader.getController();
+                            gameController.initialRendering((GameStateResponseContent) response.content());
                             Stage stage = (Stage) leftPlayer.getScene().getWindow();
                             stage.getScene().setRoot(root);
                         } catch (IOException e) {
