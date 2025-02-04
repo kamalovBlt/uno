@@ -1,8 +1,9 @@
 package ru.itis.uno.controller.util;
 
-import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ru.itis.cards.Card;
 import ru.itis.cards.CardColor;
@@ -31,31 +32,18 @@ public class CardLoader {
         ImageView cardImageView = getCardImageView(card);
         cardImageView.setId(card.type().toString() + card.color().toString() + card.value());
 
-        cardImageView.setCursor(Cursor.HAND);
-
-        cardImageView.setOnMouseEntered(event -> {
-            cardImageView.setScaleX(1.2);
-            cardImageView.setScaleY(1.2);
-        });
-
-        cardImageView.setOnMouseExited(event -> {
-            cardImageView.setScaleX(1.0);
-            cardImageView.setScaleY(1.0);
-        });
-
         cardImageView.setOnMouseClicked(_ -> {
 
-            if (gameState.getCurrentMovePlayerId() == gameState.getReceiverPlayer().id()) {
-                clientProtocolService.send(new Request(
-                                RequestType.COVER_CARD,
-                                new CoverCardRequestContent(
-                                        card,
-                                        gameState.getReceiverPlayer().id(),
-                                        Client.getInstance().getCurrentGameId())),
-                        Client.getInstance().getSocket()
-                );
+            System.out.println("Нажал кнопку");
 
-            }
+            clientProtocolService.send(new Request(
+                            RequestType.COVER_CARD,
+                            new CoverCardRequestContent(card, gameState.getReceiverPlayer().id(), Client.getInstance().getCurrentGameId())),
+                    Client.getInstance().getSocket()
+            );
+
+            System.out.println("Отправил запрос");
+
         });
 
         pane.getChildren().add(cardImageView);
