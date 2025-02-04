@@ -10,6 +10,7 @@ import ru.itis.lobby.Player;
 import ru.itis.request.Request;
 import ru.itis.response.Response;
 import ru.itis.response.ResponseType;
+import ru.itis.response.content.GameIsOverResponseContent;
 import ru.itis.response.content.GameStateResponseContent;
 import ru.itis.service.MessageService;
 import ru.itis.unogame.util.LoopedList;
@@ -91,6 +92,14 @@ public class Game {
 
     private void notifyAllPlayers() {
         int currentMovePlayerId = players.getCurrent().id();
+        do {
+            if (players.getCurrent().cards().isEmpty()) {
+                log.info("Game winner is: {}", players.getCurrent().username());
+                notifyAllPlayersAboutEndGame(players.getCurrent().username());
+                return;
+            }
+            players.next();
+        } while (players.getCurrent().id() != currentMovePlayerId);
         for (int i = 0; i < players.size(); ++i) {
             GamePlayer receiverPlayer = players.getCurrent();
             Player player = new Player(receiverPlayer.id(), receiverPlayer.username(), receiverPlayer.cards());
@@ -118,6 +127,17 @@ public class Game {
                     receiverPlayer.socket());
             players.next();
         }
+    }
+
+    private void notifyAllPlayersAboutEndGame(String winnerUsername) {
+        int currentId = players.getCurrent().id();
+        do {
+            serverProtocolService.send(new Response(
+                            ResponseType.GAME_IS_OVER,
+                            new GameIsOverResponseContent(winnerUsername)),
+                    players.getCurrent().socket());
+            players.next();
+        } while (players.getCurrent().id() != currentId);
     }
 
     public void coverCard(int playerId, Card card) {

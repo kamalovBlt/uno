@@ -10,7 +10,8 @@ public enum ResponseType {
     LOBBY_TO_CLIENT(4),
     LOBBY_ID(5),
     ERROR(6),
-    GAME_STATE(7);
+    GAME_STATE(7),
+    GAME_IS_OVER(8);
 
     private final int index;
 
