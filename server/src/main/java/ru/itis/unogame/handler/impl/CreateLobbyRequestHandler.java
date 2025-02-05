@@ -33,7 +33,7 @@ public class CreateLobbyRequestHandler implements RequestHandler {
         log.info("Creating lobby for user: {}", createLobbyRequestContent.getClientId());
         int clientId = createLobbyRequestContent.getClientId();
         String username = createLobbyRequestContent.getUsername();
-        GamePlayer gamePlayer = new GamePlayer(clientId, username, socket, new ArrayList<>());
+        GamePlayer gamePlayer = new GamePlayer(clientId, username, socket, new ArrayList<>(), false);
         Game game = gameService.createGame(gamePlayer);
         serverProtocolService.send(
                 new Response(

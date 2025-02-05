@@ -64,7 +64,7 @@ public class JoinLobbyRequestHandler implements RequestHandler {
             return;
         }
         LoopedList<GamePlayer> players = game.getPlayers();
-        players.add(new GamePlayer(playerId, username, socket, new ArrayList<>()));
+        players.add(new GamePlayer(playerId, username, socket, new ArrayList<>(), false));
         while (players.getCurrent().id() != playerId) {
             players.next();
         }

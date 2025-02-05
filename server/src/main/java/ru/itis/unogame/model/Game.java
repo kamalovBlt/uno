@@ -31,7 +31,6 @@ public class Game {
     private final Deque<Card> deck;
     private final MessageService<Response, Request> serverProtocolService;
     private Card currentCard;
-    private int idLastPlayerSayUno;
 
     public Game(int id, LoopedList<GamePlayer> players, Deque<Card> deck, MessageService<Response, Request> serverProtocolService) {
         this.id = id;
@@ -155,6 +154,7 @@ public class Game {
                 currentCard = card;
                 players.getCurrent().cards().remove(card);
                 players.next();
+                players.getCurrent().setSaysUno(false);
                 for (int i = 0; i < Math.min(deck.size(), 4); ++i) {
                     players.getCurrent().cards().add(deck.pop());
                 }
@@ -163,12 +163,14 @@ public class Game {
                 currentCard = card;
                 players.getCurrent().cards().remove(card);
                 players.next();
+                players.getCurrent().setSaysUno(false);
             }
             if (card.type() == CardType.NUMBER) {
                 if (card.color() == currentCard.color() || card.value() == currentCard.value()) {
                     currentCard = card;
                     players.getCurrent().cards().remove(card);
                     players.next();
+                    players.getCurrent().setSaysUno(false);
                 }
             }
             if (card.color() == currentCard.color() || card.type() == currentCard.type()) {
@@ -177,17 +179,21 @@ public class Game {
                     players.getCurrent().cards().remove(card);
                     players.reverse();
                     players.next();
+                    players.getCurrent().setSaysUno(false);
                 }
                 if (card.type() == CardType.BLOCK) {
                     currentCard = card;
                     players.getCurrent().cards().remove(card);
                     players.next();
+                    players.getCurrent().setSaysUno(false);
                     players.next();
+                    players.getCurrent().setSaysUno(false);
                 }
                 if (card.type() == CardType.PLUS2) {
                     currentCard = card;
                     players.getCurrent().cards().remove(card);
                     players.next();
+                    players.getCurrent().setSaysUno(false);
                     for (int i = 0; i < Math.min(deck.size(), 2); ++i) {
                         players.getCurrent().cards().add(deck.pop());
                     }
@@ -219,15 +225,18 @@ public class Game {
         lock.lock();
         try {
             if (players.getCurrent().id() == playerId) {
-                idLastPlayerSayUno = playerId;
-                notifyAllPlayers();
-                return;
+                players.getCurrent().setSaysUno(true);
+
             }
-            if (players.getCurrent().id() != idLastPlayerSayUno && players.getCurrent().cards().size() == 1) {
-                for (int i = 0; i < Math.min(2, deck.size()); ++i) {
-                    players.getCurrent().cards().add(deck.pop());
+            int currentPlayerId = players.getCurrent().id();
+            do {
+                if (players.getCurrent().id() != playerId && !players.getCurrent().saysUno() && players.getCurrent().cards().size() == 1) {
+                    for (int i = 0; i < Math.min(2, deck.size()); ++i) {
+                        players.getCurrent().cards().add(deck.pop());
+                    }
                 }
-            }
+                players.next();
+            } while (players.getCurrent().id() != currentPlayerId);
             notifyAllPlayers();
         } finally {
             lock.unlock();

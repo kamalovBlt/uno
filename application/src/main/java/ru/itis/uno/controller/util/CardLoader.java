@@ -31,7 +31,7 @@ public class CardLoader {
         ImageView cardImageView = getCardImageView(card);
         cardImageView.setId(card.type().toString() + card.color().toString() + card.value());
 
-        cardImageView.setOnMouseClicked(_ -> {
+        cardImageView.setOnMouseClicked(a -> {
 
             CardColor cardColor = null;
 
@@ -62,13 +62,13 @@ public class CardLoader {
 
         });
 
-        cardImageView.setOnMouseEntered(_ -> {
+        cardImageView.setOnMouseEntered(a -> {
             cardImageView.setCursor(Cursor.HAND);
             cardImageView.setScaleX(1.2);
             cardImageView.setScaleY(1.2);
         });
 
-        cardImageView.setOnMouseExited(_ -> {
+        cardImageView.setOnMouseExited(a -> {
             cardImageView.setCursor(Cursor.DEFAULT);
             cardImageView.setScaleX(1.0);
             cardImageView.setScaleY(1.0);

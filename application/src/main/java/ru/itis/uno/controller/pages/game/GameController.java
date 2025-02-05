@@ -105,7 +105,7 @@ public class GameController {
 
         List<Player> otherPlayers = gameState.getOtherPlayers();
 
-        Player leftPlayer = otherPlayers.getFirst();
+        Player leftPlayer = otherPlayers.get(0);
         Player topPlayer = otherPlayers.get(1);
         Player rightPlayer = otherPlayers.get(2);
 
