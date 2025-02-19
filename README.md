@@ -1,4 +1,4 @@
-# Play UNO with AI opponents or friends
+# Play UNO with friends
 
 - Fully implemented game rules
 - Interactive graphical user interface
